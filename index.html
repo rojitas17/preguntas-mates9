@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Preguntas</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #eef2f3;
+      margin: 0;
+      padding: 10px;
+    }
+
+    header, footer {
+      text-align: center;
+      padding: 10px;
+      background-color: #2c3e50;
+      color: white;
+    }
+
+    main {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    section {
+      margin-bottom: 20px;
+    }
+
+    article {
+      margin-bottom: 15px;
+    }
+
+    h1, h2 {
+      color: #34495e;
+    }
+
+    label {
+      display: block;
+      margin: 5px 0;
+    }
+
+    button {
+      background-color: #2980b9;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #1c5980;
+    }
+
+    #resultado, #mensajeError, #btnSiguientePista, #pistaFinal {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 20px;
+      display: none;
+    }
+
+    #mensajeError {
+      color: #c0392b;
+    }
+
+    #pistaFinal {
+      background-color: #fff3cd;
+      padding: 10px;
+      border-radius: 8px;
+      color: #856404;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1  style="color: #eef2f3;"> RESUELVE LA PREGUNTA PARA LA SIGUIENTE PISTA </h1>
+  </header>
+
+  <main>
+    <form id="quizForm">
+      <section>
+        <article>
+          <h1>Secuencia</h1>
+          <p>Encuentra el valor de la siguiente secuencia:
+2 + 3 = 13  
+3 + 4 = 25  
+4 + 5 = 41  
+5 + 6 = ?
+
+</p>
+          <label><input type="radio" name="p1" value="a"> a) 50</label>
+          <label><input type="radio" name="p1" value="b"> b) 22</label>
+          <label><input type="radio" name="p1" value="c"> c) 40</label>
+          <label><input type="radio" name="p1" value="d"> d) 37</label>
+        </article>
+      </section>
+
+      <button type="button" onclick="calcularResultado()">Enviar</button>
+    </form>
+
+    <div id="resultado"></div>
+    <div id="mensajeError">❌ La respuesta es incorrecta. Intenta de nuevo.</div>
+
+    <button id="btnSiguientePista" onclick="mostrarPista()">Ver siguiente pista</button>
+
+    <div id="pistaFinal">No siempre está limpio pero es bueno cuando mas lo necesitas.</div>
+  </main>
+
+  <script>
+    function calcularResultado() {
+      const respuestaCorrecta = 'b';
+      const seleccionada = document.querySelector('input[name="p1"]:checked');
+
+      const resultado = document.getElementById("resultado");
+      const mensajeError = document.getElementById("mensajeError");
+      const btnSiguiente = document.getElementById("btnSiguientePista");
+      const pista = document.getElementById("pistaFinal");
+
+      // Ocultar todo primero
+      resultado.style.display = "none";
+      mensajeError.style.display = "none";
+      btnSiguiente.style.display = "none";
+      pista.style.display = "none";
+
+      if (seleccionada) {
+        if (seleccionada.value === respuestaCorrecta) {
+          resultado.textContent = " ¡Correcto! Has desbloqueado la siguiente pista.";
+          resultado.style.display = "block";
+          btnSiguiente.style.display = "inline-block";
+        } else {
+          resultado.textContent = "Tu puntuación es: 0 de 1";
+          resultado.style.display = "block";
+          mensajeError.style.display = "block";
+        }
+      } else {
+        alert("Por favor selecciona una respuesta.");
+      }
+    }
+
+    function mostrarPista() {
+      document.getElementById("pistaFinal").style.display = "block";
+    }
+  </script>
+
+</body>
+</html>
