@@ -180,3 +180,185 @@ function lanzarConfeti() {
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pregunta Épica</title>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #eef2f3;
+    margin: 0;
+    padding: 10px;
+    overflow-x: hidden;
+  }
+  header {
+    text-align: center;
+    padding: 10px;
+    background-color: #2c3e50;
+    color: white;
+  }
+  main {
+    max-width: 700px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 2;
+  }
+  label {
+    display: block;
+    margin: 5px 0;
+  }
+  button {
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  button:hover {
+    background-color: #1c5980;
+  }
+  #resultado, #mensajeError {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 20px;
+    display: none;
+  }
+  #resultado {
+    font-size: 2em;
+    color: #27ae60;
+    animation: zoomIn 0.8s ease forwards;
+  }
+  #mensajeError {
+    color: #c0392b;
+  }
+  @keyframes zoomIn {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1.2); opacity: 1; }
+  }
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>RESUELVE LA PREGUNTA</h1>
+</header>
+
+<main>
+  <form id="quizForm">
+    <h2>Secuencia</h2>
+    <p>Encuentra el valor de la siguiente secuencia:<br>
+    2 + 3 = 13<br>
+    3 + 4 = 25<br>
+    4 + 5 = 41<br>
+    5 + 6 = ?</p>
+    <label><input type="radio" name="p1" value="a"> a) 50</label>
+    <label><input type="radio" name="p1" value="b"> b) 22</label>
+    <label><input type="radio" name="p1" value="c"> c) 40</label>
+    <label><input type="radio" name="p1" value="d"> d) 37</label>
+    <br>
+    <button type="button" onclick="calcularResultado()">Enviar</button>
+  </form>
+
+  <div id="resultado">✅ ¡Correcto, has ganado!</div>
+  <div id="mensajeError">❌ La respuesta es incorrecta. Intenta de nuevo.</div>
+</main>
+
+<canvas id="confetiCanvas"></canvas>
+
+<audio id="victorySound" src="https://www.fesliyanstudios.com/play-mp3/387" preload="auto"></audio>
+
+<script>
+function calcularResultado() {
+  const respuestaCorrecta = 'b';
+  const seleccionada = document.querySelector('input[name="p1"]:checked');
+  const resultado = document.getElementById("resultado");
+  const mensajeError = document.getElementById("mensajeError");
+  const sonido = document.getElementById("victorySound");
+
+  resultado.style.display = "none";
+  mensajeError.style.display = "none";
+
+  if (seleccionada) {
+    if (seleccionada.value === respuestaCorrecta) {
+      resultado.style.display = "block";
+      lanzarConfeti();
+      sonido.play();
+    } else {
+      mensajeError.style.display = "block";
+    }
+  } else {
+    alert("Por favor selecciona una respuesta.");
+  }
+}
+
+// Confeti épico
+function lanzarConfeti() {
+  const canvas = document.getElementById("confetiCanvas");
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  let confetis = [];
+  for (let i = 0; i < 150; i++) {
+    confetis.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      r: Math.random() * 6 + 4,
+      d: Math.random() * 50,
+      color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+      tilt: Math.random() * 10 - 10
+    });
+  }
+
+  function dibujar() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    confetis.forEach((c) => {
+      ctx.beginPath();
+      ctx.fillStyle = c.color;
+      ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    actualizar();
+  }
+
+  let angulo = 0;
+  function actualizar() {
+    angulo += 0.01;
+    confetis.forEach((c, i) => {
+      c.y += Math.cos(angulo + c.d) + 1 + c.r / 2;
+      c.x += Math.sin(angulo) * 2;
+      if (c.y > canvas.height) {
+        confetis[i] = {
+          x: Math.random() * canvas.width,
+          y: -10,
+          r: c.r,
+          d: c.d,
+          color: c.color,
+          tilt: c.tilt
+        };
+      }
+    });
+  }
+
+  setInterval(dibujar, 20);
+}
+</script>
+
+</body>
+</html>
